@@ -1,0 +1,3 @@
+[submodule "tmThemes"]
+	path = tmThemes
+	url = git://github.com/ciembor/TextMate-Themes

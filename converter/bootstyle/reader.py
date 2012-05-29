@@ -12,9 +12,9 @@ class Reader:
     try:
       theme = etree.parse(input_filename);
     except IOError:
-      sys.exit("File doesn't exist.")
+      sys.exit(input_filename + " file doesn't exist.")
     except etree.ParseError:
-      sys.exit("Input file is not well-formed.")
+      sys.exit(input_filename + " file is not well-formed.")
   
     return theme
   
@@ -40,6 +40,8 @@ class Reader:
   
     for key in special_colors:
       if (len(special_colors[key]) > 7):
+        if (len(special_colors["background"]) > 7):
+          special_colors["background"] = rgba2rgb(special_colors["background"], '#FFFFFF')
         special_colors[key] = rgba2rgb(special_colors[key], special_colors["background"])
   
     return special_colors

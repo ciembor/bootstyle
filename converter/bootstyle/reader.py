@@ -12,9 +12,9 @@ class Reader:
     try:
       theme = etree.parse(input_filename);
     except IOError:
-      sys.exit(input_filename + " file doesn't exist.")
+      print(input_filename + " file doesn't exist.")
     except etree.ParseError:
-      sys.exit(input_filename + " file is not well-formed.")
+      print(input_filename + " file is not well-formed.")
   
     return theme
   
@@ -67,8 +67,14 @@ class Reader:
 
   def getColors(self, input_filename):
     
-    theme = self._readTheme(input_filename)
     colors = {}
+    colors["special"] = {}
+    colors["all"] = {}
+    
+    try:
+      theme = self._readTheme(input_filename)
+    except Exception:
+      return colors
     
     colors["special"] = self._readSpecialColors(theme)
     colors["all"] = self._readColors(theme)

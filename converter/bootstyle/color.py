@@ -22,3 +22,14 @@ def rgba2rgb(rgba_hex, background_hex):
     rgb = mixRGBColors(rgb, background, opacity)
     
   return rgb.get_rgb_hex()
+
+def hex_colors2hsl(hex_colors):
+  
+  colors = []
+  
+  for hex_color in hex_colors:
+    color = RGBColor()
+    color.set_from_rgb_hex(hex_color)
+    colors.append(color.convert_to("HSL"))
+    
+  return colors

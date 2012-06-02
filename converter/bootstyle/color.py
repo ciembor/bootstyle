@@ -1,35 +1,68 @@
 from __future__ import division
-from colormath.color_objects import RGBColor
+from colormath.color_objects import RGBColor, HSLColor
 
-def mixRGBColors(color, mask, opacity):
-  opacity /= 100.0
-  mixed = RGBColor()
+class Color(HSLColor):
   
-  mixed.rgb_r = (color.rgb_r * opacity) + (mask.rgb_r * (1 - opacity))
-  mixed.rgb_g = (color.rgb_g * opacity) + (mask.rgb_g * (1 - opacity))
-  mixed.rgb_b = (color.rgb_b * opacity) + (mask.rgb_b * (1 - opacity))
-
-  return mixed
-
-def rgba2rgb(rgba_hex, background_hex):
-  rgb = RGBColor()
-  rgb.set_from_rgb_hex(rgba_hex[:7])
-  
-  if len(rgba_hex) > 7:
-    opacity = int(100 * (int(rgba_hex[7:], 16) / 255))
-    background = RGBColor()
-    background.set_from_rgb_hex(background_hex)
-    rgb = mixRGBColors(rgb, background, opacity)
+  def _fromHSLColor(self, hslcolor):
+    self.hsl_h = hslcolor.hsl_h
+    self.hsl_s = hslcolor.hsl_s
+    self.hsl_l = hslcolor.hsl_l
     
-  return rgb.get_rgb_hex()
+  def _fromRGBColor(self, rgbcolor):
+    self._fromHSLColor(rgbcolor.convert_to("HSL"))
 
-def hex_colors2hsl(hex_colors):
+  def fromRGBHex(self, rgb_hex):
+    rgb = RGBColor()
+    rgb.set_from_rgb_hex(rgb_hex)
+    self._fromRGBColor(rgb)
+    
+  def fromRGBAHex(self, rgba_hex, background_hex):
+    self.fromRGBHex(rgba_hex[:7])
+    
+    if len(rgba_hex) > 7:
+      opacity = int(100 * (int(rgba_hex[7:], 16) / 255))
+      background = RGBColor()
+      if len(background_hex) > 7:
+        background_hex = "#ffffff"
+      background.set_from_rgb_hex(background_hex)
+      self.mix(background, opacity)
+
+  def mix(self, mask, opacity):
+    opacity /= 100.0
+    rgbcolor = self.convert_to("RGB")
+    rgbmask = mask.convert_to("RGB")
+    mixed = RGBColor()
+    
+    mixed.rgb_r = (rgbcolor.rgb_r * opacity) + (rgbmask.rgb_r * (1 - opacity))
+    mixed.rgb_g = (rgbcolor.rgb_g * opacity) + (rgbmask.rgb_g * (1 - opacity))
+    mixed.rgb_b = (rgbcolor.rgb_b * opacity) + (rgbmask.rgb_b * (1 - opacity))
   
+    self._fromRGBColor(mixed)
+
+  def getHex(self):
+    return self.convert_to("RGB").get_rgb_hex()
+
+  def getHUE(self):
+    return self.hsl_h
+
+  def getSaturation(self):
+    return self.hsl_s
+  
+  def getLightness(self):
+    return self.hsl_l
+
+  def eq(self, color):
+    if (self.hsl_h == color.getHUE() and self.hsl_s == color.getSaturation() and self.hsl_l == color.getLightness()):
+      return True
+    else:
+      return False
+
+def hexToColors(hex_colors):
   colors = []
   
   for hex_color in hex_colors:
-    color = RGBColor()
-    color.set_from_rgb_hex(hex_color)
+    color = Color()
+    color.fromRGBHex(hex_color)
     colors.append(color.convert_to("HSL"))
     
   return colors

@@ -1,6 +1,6 @@
 import sys
 from lxml import etree
-from bootstyle.color import rgba2rgb
+from bootstyle.color import *
 
 class Reader:
   
@@ -21,7 +21,7 @@ class Reader:
   def _readSpecialColors(self, theme):
     
     special_colors = {}
-  
+    
     try:
       settings = theme.find(".//array/dict/*[1]").getnext()
     except Exception:
@@ -38,19 +38,22 @@ class Reader:
     except AttributeError:
       sys.exit("Something is wrong with <settings> special colors of this theme.")
   
+    background_hex = special_colors["background"]
+  
     for key in special_colors:
-      if (len(special_colors[key]) > 7):
-        if (len(special_colors["background"]) > 7):
-          special_colors["background"] = rgba2rgb(special_colors["background"], '#FFFFFF')
-        special_colors[key] = rgba2rgb(special_colors[key], special_colors["background"])
+      color = Color()
+      color.fromRGBAHex(special_colors[key], background_hex)
+      special_colors[key] = color
   
     return special_colors
   
   def _readColors(self, theme):
   
     strings = theme.findall(".//string")
+    rgba_colors = set()
     colors = set()
     special_colors = self._readSpecialColors(theme)
+    background_hex = special_colors["background"].getHex()
     
     for element in strings: 
       try:
@@ -58,10 +61,12 @@ class Reader:
       except AttributeError:
         pass
       if (key in self._COLOR_KEYS):
-        color = element.text.lower()
-        if (len(color) > 7):
-          color = rgba2rgb(color, special_colors["background"])
-        colors.add(color)
+        rgba_colors.add(element.text.lower())
+        
+    for rgba in rgba_colors:
+      color = Color()
+      color.fromRGBAHex(rgba, background_hex)
+      colors.add(color)
   
     return colors
 
@@ -78,5 +83,5 @@ class Reader:
     
     colors["special"] = self._readSpecialColors(theme)
     colors["all"] = self._readColors(theme)
-    
+
     return colors

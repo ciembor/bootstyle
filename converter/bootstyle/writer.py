@@ -1,4 +1,5 @@
 from bootstyle.clustering import *
+from bootstyle.color import *
 
 class Writer:
   
@@ -13,7 +14,7 @@ class Writer:
     string += '<ul>'
     for key in colors["special"].keys():
       string += '<li class="special">'
-      string += '<span style="background-color: ' + colors["special"][key] + '">' + key + '</span>'
+      string += '<span style="background-color: ' + colors["special"][key].getHex() + '">' + key + '</span>'
       string += '</li>'
     string += '</ul>'
     
@@ -24,7 +25,7 @@ class Writer:
     string += '<ul>'
     for color in colors["all"]:
       string += '<li class="all">'
-      string += '<span style="background-color: ' + color + '">' + color + '</span>'
+      string += '<span style="background-color: ' + color.getHex() + '">' + color.getHex() + '</span>'
       string += '</li>'
     string += '</ul>'
     

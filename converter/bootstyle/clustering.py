@@ -1,19 +1,19 @@
-from cluster import *
-from bootstyle.color import hex_colors2hsl
+from cluster import HierarchicalClustering
+from bootstyle.color import *
 
-def clusterByLightness(hex_colors):
-  colors = hex_colors2hsl(hex_colors)
-  clusters = HierarchicalClustering(colors, lambda x, y: abs(x.hsl_l - y.hsl_l))
+def clusterByLightness(colors):
+  colors_list = list(colors)
+  clusters = HierarchicalClustering(colors_list, lambda x, y: abs(x.getLightness() - y.getLightness()))
   return clusters.getlevel(0.1)
 
-def clusterByHUE(hex_colors):
-  colors = hex_colors2hsl(hex_colors)
-  clusters = HierarchicalClustering(colors, lambda x, y: abs(x.hsl_h - y.hsl_h))
+def clusterByHUE(colors):
+  colors_list = list(colors)
+  clusters = HierarchicalClustering(colors_list, lambda x, y: abs(x.getHUE() - y.getHUE()))
   return clusters.getlevel(10)
 
-def clusterBySaturation(hex_colors):
-  colors = hex_colors2hsl(hex_colors)
-  clusters = HierarchicalClustering(colors, lambda x, y: abs(x.hsl_s - y.hsl_s))
+def clusterBySaturation(colors):
+  colors_list = list(colors)
+  clusters = HierarchicalClustering(colors_list, lambda x, y: abs(x.getSaturation() - y.getSaturation()))
   return clusters.getlevel(0.05)
 
 def intersection(clusters1, clusters2):
@@ -27,10 +27,7 @@ def intersection(clusters1, clusters2):
       colors = []
       for color1 in cluster1:
         for color2 in cluster2:
-          if (color1 and color2 
-              and (color1.hsl_h == color2.hsl_h) 
-              and (color1.hsl_s == color2.hsl_s) 
-              and (color1.hsl_l == color2.hsl_l)):
+          if color1 and color2 and color1.eq(color2):
             colors.append(color1)
             appended.append(color1)
       
@@ -52,6 +49,6 @@ def clusters2hex(clusters):
     hex_cluster = []
     hex_clusters.append(hex_cluster)
     for color in cluster:
-      hex_cluster.append(color.convert_to("RGB").get_rgb_hex())
+      hex_cluster.append(color.getHex())
       
   return hex_clusters

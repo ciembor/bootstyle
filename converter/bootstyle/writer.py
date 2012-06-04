@@ -3,9 +3,9 @@ from bootstyle.color import *
 
 class Writer:
   
-  def writeToString(self, colors, output_filename):
+  def writeToString(self, colors, theme_obj, name):
     
-    string = '<h1>' + output_filename + '</h1>'
+    string = '<h1>' + name + '</h1>'
     
     ######### specials
     
@@ -29,33 +29,44 @@ class Writer:
       string += '</li>'
     string += '</ul>'
     
-    ######### create clusters
-    
-    lightness = clusterByLightness(colors["all"])
-    hue = clusterByHUE(colors["all"])
-    saturation = clusterBySaturation(colors["all"])
-    
-    ######### print clusters
-    
-    def print_clusters(clusters):
-      string = ""
-      for cluster in clusters:
-        if len(cluster) > 1:
-          string += "<hr />"
-          string += "<ul>"
-          for color in cluster:
-            string += '<li class="all">'
-            string += '<span style="background-color: ' + color + '">' + color + '</span>'
-            string += '</li>'
-          string += "</ul>"
-        
-      return string
-    string += "<h2>HUE and lightness clusters intersection</h2>"
-    string += print_clusters(clusters2hex(intersection(hue, lightness)))
-    string += "<h2>Lightness and saturation clusters intersection</h2>"
-    string += print_clusters(clusters2hex(intersection(lightness, saturation)))
-    string += "<h2>Saturation and HUE clusters intersection</h2>"
-    string += print_clusters(clusters2hex(intersection(saturation, hue)))
+#    ######### create clusters
+#    
+#    lightness = clusterByLightness(colors["all"])
+#    hue = clusterByHUE(colors["all"])
+#    saturation = clusterBySaturation(colors["all"])
+#    
+#    ######### print clusters
+#    
+#    def print_clusters(clusters):
+#      string = ""
+#      for cluster in clusters:
+#        if len(cluster) > 1:
+#          string += "<hr />"
+#          string += "<ul>"
+#          for color in cluster:
+#            string += '<li class="all">'
+#            string += '<span style="background-color: ' + color + '">' + color + '</span>'
+#            string += '</li>'
+#          string += "</ul>"
+#        
+#      return string
+#    string += "<h2>HUE and lightness clusters intersection</h2>"
+#    string += print_clusters(clusters2hex(intersection(hue, lightness)))
+#    string += "<h2>Lightness and saturation clusters intersection</h2>"
+#    string += print_clusters(clusters2hex(intersection(lightness, saturation)))
+#    string += "<h2>Saturation and HUE clusters intersection</h2>"
+#    string += print_clusters(clusters2hex(intersection(saturation, hue)))
+
+    theme = theme_obj.getTheme()
+
+    for scope in theme.keys():
+      string += "<h2>" + scope + "</h2>"
+      string += '<ul>'
+      for name in theme[scope].keys():
+        color = theme[scope][name]
+        if Color == type(color):
+          string += '<span style="background-color: ' + color.getHex() + '">' + name + '</span>'
+      string += '</ul>'
     
     return string
     

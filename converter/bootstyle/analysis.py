@@ -5,4 +5,3 @@ def isDark(colors):
     return True
   else:
     return False
-  

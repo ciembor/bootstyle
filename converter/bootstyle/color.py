@@ -57,6 +57,17 @@ class Color(HSLColor):
     else:
       return False
 
+  def nearestColor(self, colors):
+    nearest = {"color": None, "distance": None}
+    
+    for current_color in colors:
+      current_distance = self.delta_e(current_color)
+      if not nearest["distance"] or current_distance < nearest["distance"]:
+        nearest["distance"] = current_distance
+        nearest["color"] = current_color
+        
+    return nearest["color"]
+
 def hexToColors(hex_colors):
   colors = []
   

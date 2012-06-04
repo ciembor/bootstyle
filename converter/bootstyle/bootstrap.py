@@ -55,7 +55,7 @@ default = {
   "forms" : {
     "@placeholderText" : "@grayLight",
     "@inputBackground" : "@white",
-    "@inputBorder" : "#ccc",
+    "@inputBorder" : "#cccccc",
     "@inputDisabledBackground" : "@grayLighter",
     "@formActionsBackground" : "#f5f5f5"
   },

@@ -66,12 +66,16 @@ default = {
   "alerts" : {
     "@warningText" : "#c09853",
     "@warningBackground" : "#f3edd2",
+    "@warningBorder" : "darken(spin(@warningBackground, -10), 3%)",
     "@errorText" : "#b94a48",
     "@errorBackground" : "#f2dede",
+    "@errorBorder" : "darken(spin(@errorBackground, -10), 3%)",
     "@successText" : "#468847",
     "@successBackground" : "#dff0d8",
+    "@successBorder" : "darken(spin(@successBackground, -10), 5%)",
     "@infoText" : "#3a87ad",
-    "@infoBackground" : "#d9edf7"
+    "@infoBackground" : "#d9edf7",
+    "@infoBorder" : "darken(spin(@infoBackground, -10), 7%)",
   },
 
   "navbar" : {
@@ -86,7 +90,8 @@ default = {
     "@navbarSearchBackgroundFocus" : "@white",
     "@navbarSearchBorder" : "darken(@navbarSearchBackground, 30%)",
     "@navbarSearchPlaceholderColor" : "darken(@white, 20%)",
-    "@navbarBrandColor" : "@navbarLinkColor"
+    "@navbarBrandColor" : "@navbarLinkColor",
+    "@navbarLinkColorActive" : "@navbarLinkColorHover"
   },
   
   "dropdowns" : {

@@ -31,3 +31,21 @@ def writeHTML(themes_directory, output_filename):
   </html>"""
   
   file.write(string)
+  
+def writeLESS(themes_directory, output_directory, bootstrap_directory):
+  reader = Reader()
+  writer = Writer()
+  
+  for dirname, dirnames, filenames in os.walk(themes_directory):
+    for filename in filenames:
+      if filename.endswith('.tmTheme'):
+        try:
+          theme = Theme()
+          colors = reader.getColors(themes_directory + "/" + filename)
+          theme.mapColors(colors["all"])
+          theme.mapSpecialColors(colors["special"])
+          writer.writeToLessFiles(theme, filename.replace(".tmTheme", ""), output_directory, bootstrap_directory)
+        except:
+          print("Warning! Can't convert " + filename)
+          pass
+        

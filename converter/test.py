@@ -3,4 +3,4 @@
 
 from bootstyle.tests import *
 
-writeHTML('../tmThemes', '../output/colors.html')
+writeLESS('../tmThemes', "../output", "../../bootstrap")

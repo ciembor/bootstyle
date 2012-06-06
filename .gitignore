@@ -2,3 +2,5 @@
 .pydevproject
 .settings
 output
+!output/preview.php
+!output/docs.css

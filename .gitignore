@@ -1,6 +1,6 @@
 .project
 .pydevproject
 .settings
-output
+output/*
 !output/preview.php
 !output/docs.css

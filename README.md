@@ -1,5 +1,8 @@
 #Bootstyle
 
+##Abandoned!
+This project is abandoned because of this: http://www.boottheme.com/
+
 ##Purpose
 The purpose of this project is to provide a lot of beautiful color themes for Twitter Bootstrap 2.
 
